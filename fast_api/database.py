@@ -5,11 +5,13 @@ import motor.motor_asyncio
 from urllib.parse import quote_plus
 from bson import ObjectId
 from auth_utils import AuthJwtCsrf
+import asyncio
 
 MONGO_API_PASSWORD = quote_plus(config('MONGO_API_PASSWORD'))
 MONGO_API_KEY = config('MONGO_API_KEY').replace('<password>', MONGO_API_PASSWORD)
 
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_API_KEY)
+client.get_io_loop = asyncio.get_event_loop
 database = client.API_DB
 collection_todo = database.todo
 collection_user = database.user
