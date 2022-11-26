@@ -4,6 +4,9 @@ import { selectCsrfState, selectTask } from './slices/appSlice'
 import axios from 'axios'
 import { CsrfToken } from './types/types'
 import { useAppSelector } from './app/hooks'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Auth } from './components/Auth'
+import { Todo } from './components/Todo'
 
 function App() {
   const csrf = useAppSelector(selectCsrfState)
@@ -21,7 +24,15 @@ function App() {
   const task = useSelector(selectTask)
   const csrfState = useSelector(selectCsrfState)
   console.log('task:', task, csrfState)
-  return <div>{`task: ${task}`}</div>
+  // return <div>{`task: ${task}`}</div>
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Auth />} />
+        <Route path="/todo" element={<Todo />} />
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App
