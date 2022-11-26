@@ -23,8 +23,7 @@ function App() {
 
   const task = useSelector(selectTask)
   const csrfState = useSelector(selectCsrfState)
-  console.log('task:', task, csrfState)
-  // return <div>{`task: ${task}`}</div>
+
   return (
     <BrowserRouter>
       <Routes>
