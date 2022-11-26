@@ -5,13 +5,20 @@ import { useAppDispatch } from '../app/hooks'
 import { setEditedTask } from '../slices/appSlice'
 import { useMutateTask } from '../hooks/useMutateTask'
 
-const TaskItemMemo = ({ id, title, description }: Task) => {
+const TaskItemMemo = ({
+  id,
+  title,
+  description,
+  setId,
+}: Task & { setId: React.Dispatch<React.SetStateAction<string>> }) => {
   const dispatch = useAppDispatch()
   const { deleteTaskMutation } = useMutateTask()
 
   return (
     <li>
-      <span className="cursor-pointer font-bold">{title}</span>
+      <span className="cursor-pointer font-bold" onClick={() => setId(id)}>
+        {title}
+      </span>
       <div className="float-right ml-20 flex">
         <PencilIcon
           className="mx-1 h-5 w-5 cursor-pointer text-blue-500"
@@ -34,7 +41,6 @@ const TaskItemMemo = ({ id, title, description }: Task) => {
       </div>
     </li>
   )
-  return <></>
 }
 
 export const TaskItem = memo(TaskItemMemo)

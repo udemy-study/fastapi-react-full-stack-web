@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { LogoutIcon } from '@heroicons/react/outline'
 import { useProcessAuth } from '../hooks/useProcessAuth'
 import { useProcessTask } from '../hooks/useProcessTask'
@@ -7,12 +7,16 @@ import { useQueryTasks } from '../hooks/useQueryTasks'
 import { TaskItem } from './TaskItem'
 import { ShieldCheckIcon } from '@heroicons/react/solid'
 import { useAppSelector, useAppDispatch } from '../app/hooks'
+import { useQuerySingleTask } from '../hooks/useQuerySingleTask'
 import { setEditedTask, selectTask } from '../slices/appSlice'
 
 export const Todo = () => {
+  const [id, setId] = useState('')
   const { logout } = useProcessAuth()
   const { data: dataUser } = useQueryUser()
   const { data: dataTasks, isLoading: isLoadingTasks } = useQueryTasks()
+  const { data: dataSingleTask, isLoading: isLoadingTask } =
+    useQuerySingleTask(id)
   const dispatch = useAppDispatch()
   const editedTask = useAppSelector(selectTask)
   const { processTask } = useProcessTask()
@@ -67,10 +71,15 @@ export const Todo = () => {
               id={task.id}
               title={task.title}
               description={task.description}
+              setId={setId}
             />
           ))}
         </ul>
       )}
+      <h2 className="mt-3 font-bold">Selected Task</h2>
+      {isLoadingTask && <p>Loading...</p>}
+      <p className="my-1 text-sm text-blue-500">{dataSingleTask?.title}</p>
+      <p className="text-sm text-blue-500">{dataSingleTask?.description}</p>
     </div>
   )
 }
